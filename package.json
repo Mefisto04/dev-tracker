@@ -7,6 +7,14 @@
     "developer-tools",
     "tracking"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mefisto04/dev-tracker.git"
+  },
+  "homepage": "https://github.com/Mefisto04/dev-tracker",
+  "bugs": {
+    "url": "https://github.com/Mefisto04/dev-tracker/issues"
+  },
   "license": "MIT",
   "main": "index.js",
   "scripts": {
