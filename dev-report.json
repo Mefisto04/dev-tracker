@@ -1,0 +1,42 @@
+{
+  "summary": {
+    "totalTime": "a few seconds",
+    "totalFiles": 1,
+    "totalAdditions": 3,
+    "totalDeletions": 2,
+    "topLanguages": [
+      [
+        "js",
+        4
+      ],
+      [
+        "json",
+        3
+      ],
+      [
+        "ts",
+        1
+      ]
+    ],
+    "dependencies": [
+      "@babel/parser",
+      "chalk",
+      "chokidar",
+      "cli-table3",
+      "diff",
+      "glob",
+      "moment"
+    ]
+  },
+  "fileDetails": [
+    {
+      "file": "bin\\main.py",
+      "additions": 3,
+      "deletions": 2,
+      "changes": 4,
+      "firstModified": "2025-01-29T12:36:50.566Z",
+      "lastModified": "2025-01-29T12:36:57.360Z",
+      "timeSpent": "a few seconds"
+    }
+  ]
+}
