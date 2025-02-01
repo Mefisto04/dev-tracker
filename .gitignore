@@ -1,6 +1,3 @@
-# add bin folder .devtracker folder and node_modules folder
 .devtracker
 node_modules
-bin/cli.js
-bin/main.py
-bin/
+dev-report.json
