@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalTime": "a few seconds",
-    "totalFiles": 1,
-    "totalAdditions": 1,
+    "totalFiles": 0,
+    "totalAdditions": 0,
     "totalDeletions": 0,
     "topLanguages": [
       [
@@ -12,10 +12,6 @@
       [
         "json",
         3
-      ],
-      [
-        "py",
-        1
       ]
     ],
     "dependencies": [
@@ -28,15 +24,5 @@
       "moment"
     ]
   },
-  "fileDetails": [
-    {
-      "file": "bin\\main.py",
-      "additions": 1,
-      "deletions": 0,
-      "changes": 1,
-      "firstModified": "2025-02-01T16:36:14.798Z",
-      "lastModified": "2025-02-01T16:36:14.798Z",
-      "timeSpent": "a few seconds"
-    }
-  ]
+  "fileDetails": []
 }
