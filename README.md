@@ -125,6 +125,3 @@ If you encounter any issues or have questions, feel free to [open an issue](http
 
 Developed by [mefisto04](https://github.com/Mefisto04).
 
-```
-
-```
