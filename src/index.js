@@ -1,21 +1,23 @@
 const FileTracker = require("./fileTracker");
 const Reporter = require("./reporter");
 const path = require("path");
-
 function startTracking() {
-  const projectPath = process.cwd();
-  const tracker = new FileTracker(projectPath);
+  try {
+    const projectPath = process.cwd();
+    console.log(`Starting tracking in: ${projectPath}`);
+    const tracker = new FileTracker(projectPath);
+    tracker.initialize();
 
-  tracker.initialize();
-
-  process.on("SIGINT", () => {
-    const report = Reporter.generateReport(tracker);
-    Reporter.saveReport(report);
-    Reporter.displayReport(report); // Add this line
-    process.exit();
-  });
-
-  console.log("Tracking started... Press Ctrl+C to generate report");
+    process.on("SIGINT", () => {
+      const report = Reporter.generateReport(tracker);
+      Reporter.saveReport(report);
+      Reporter.displayReport(report);
+      process.exit();
+    });
+  } catch (error) {
+    console.error("Failed to start tracking:", error);
+    process.exit(1);
+  }
 }
 
 module.exports = {
