@@ -12,6 +12,10 @@
       [
         "json",
         3
+      ],
+      [
+        "md",
+        1
       ]
     ],
     "dependencies": [
@@ -19,6 +23,7 @@
       "chalk",
       "chokidar",
       "cli-table3",
+      "dev-tracker",
       "diff",
       "glob",
       "moment"
