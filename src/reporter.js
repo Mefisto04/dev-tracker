@@ -82,7 +82,7 @@ class Reporter {
 
     fileDetails
       .sort((a, b) => b.changes - a.changes)
-      .slice(0, 10) // Show top 10 files
+      .slice(0, 10)
       .forEach((file) => {
         table.push([
           chalk.blue(file.file),
