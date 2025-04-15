@@ -1,6 +1,6 @@
 {
   "name": "dev-tracker",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Developer productivity tracker for Node.js projects",
   "keywords": [
     "productivity",
