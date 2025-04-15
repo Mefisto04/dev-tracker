@@ -6,11 +6,36 @@ const chalk = require("chalk");
 
 class Reporter {
   static generateReport(tracker) {
+    const productiveTimeMs = tracker.calculateProductiveTime();
+
+    // Format time in sec/min/hr format
+    let totalTimeFormatted;
+    const seconds = Math.floor(productiveTimeMs / 1000);
+
+    if (seconds < 60) {
+      totalTimeFormatted = `${seconds} second${seconds !== 1 ? "s" : ""}`;
+    } else if (seconds < 3600) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSecs = seconds % 60;
+      totalTimeFormatted = `${minutes} minute${
+        minutes !== 1 ? "s" : ""
+      } ${remainingSecs} second${remainingSecs !== 1 ? "s" : ""}`;
+    } else {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const remainingSecs = seconds % 60;
+      totalTimeFormatted = `${hours} hour${
+        hours !== 1 ? "s" : ""
+      } ${minutes} minute${minutes !== 1 ? "s" : ""} ${remainingSecs} second${
+        remainingSecs !== 1 ? "s" : ""
+      }`;
+    }
+
     const report = {
       summary: {
-        totalTime: moment
-          .duration(tracker.calculateProductiveTime())
-          .humanize(),
+        totalTime: totalTimeFormatted,
+        startTime: moment(tracker.initTime).format("YYYY-MM-DD HH:mm:ss"),
+        endTime: moment(tracker.lastActivityTime).format("YYYY-MM-DD HH:mm:ss"),
         totalFiles: tracker.fileStates.size,
         totalAdditions: Array.from(tracker.fileStates.values()).reduce(
           (sum, stats) => sum + stats.additions,
@@ -48,6 +73,8 @@ class Reporter {
 
     table.push(
       [chalk.bold("Total Time"), chalk.green(summary.totalTime)],
+      [chalk.bold("Start Time"), chalk.yellow(summary.startTime)],
+      [chalk.bold("End Time"), chalk.yellow(summary.endTime)],
       [chalk.bold("Files Tracked"), summary.totalFiles],
       [
         chalk.bold("Total Additions"),
@@ -75,9 +102,10 @@ class Reporter {
         chalk.bold.cyan("Additions"),
         chalk.bold.cyan("Deletions"),
         chalk.bold.cyan("Changes"),
+        chalk.bold.cyan("Time Spent"),
         chalk.bold.cyan("Last Modified"),
       ],
-      colWidths: [40, 12, 12, 12, 20],
+      colWidths: [30, 10, 10, 10, 12, 18],
     });
 
     fileDetails
@@ -89,12 +117,49 @@ class Reporter {
           chalk.green(`+${file.additions}`),
           chalk.red(`-${file.deletions}`),
           file.changes,
+          chalk.yellow(file.timeSpent),
           moment(file.lastModified).format("YYYY-MM-DD HH:mm"),
         ]);
       });
 
     console.log(chalk.bold.underline("\nTop Modified Files"));
     console.log(table.toString());
+
+    // Add a more detailed view of the top file
+    if (fileDetails.length > 0) {
+      const topFile = fileDetails.sort((a, b) => b.changes - a.changes)[0];
+
+      console.log(
+        chalk.bold.underline("\nDetailed Stats for Most Active File")
+      );
+      const detailTable = new Table({
+        head: [chalk.bold.cyan("Metric"), chalk.bold.cyan("Value")],
+        colWidths: [25, 55],
+      });
+
+      detailTable.push(
+        [chalk.bold("File"), chalk.blue(topFile.file)],
+        [chalk.bold("Total Changes"), topFile.changes],
+        [chalk.bold("Additions"), chalk.green(`+${topFile.additions}`)],
+        [chalk.bold("Deletions"), chalk.red(`-${topFile.deletions}`)],
+        [chalk.bold("Time Spent"), chalk.yellow(topFile.timeSpent)],
+        [chalk.bold("Total Edits"), topFile.totalEdits],
+        [
+          chalk.bold("Avg. Edit Size"),
+          topFile.averageEditSize.toFixed(2) + " lines per edit",
+        ],
+        [
+          chalk.bold("First Modified"),
+          moment(topFile.firstModified).format("YYYY-MM-DD HH:mm:ss"),
+        ],
+        [
+          chalk.bold("Last Modified"),
+          moment(topFile.lastModified).format("YYYY-MM-DD HH:mm:ss"),
+        ]
+      );
+
+      console.log(detailTable.toString());
+    }
   }
 
   static displayDependencies(dependencies) {

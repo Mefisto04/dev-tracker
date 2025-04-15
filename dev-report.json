@@ -1,13 +1,15 @@
 {
   "summary": {
-    "totalTime": "a few seconds",
-    "totalFiles": 0,
-    "totalAdditions": 0,
-    "totalDeletions": 0,
+    "totalTime": "46 seconds",
+    "startTime": "2025-04-15 22:46:29",
+    "endTime": "2025-04-15 22:47:16",
+    "totalFiles": 2,
+    "totalAdditions": 9,
+    "totalDeletions": 5,
     "topLanguages": [
       [
         "js",
-        4
+        5
       ],
       [
         "json",
@@ -29,5 +31,84 @@
       "moment"
     ]
   },
-  "fileDetails": []
+  "fileDetails": [
+    {
+      "file": "bin\\test.js",
+      "additions": 5,
+      "deletions": 4,
+      "changes": 6,
+      "firstModified": "2025-04-15T17:16:34.562Z",
+      "lastModified": "2025-04-15T17:16:53.420Z",
+      "modificationHistory": [
+        {
+          "timestamp": "2025-04-15T17:16:34.562Z",
+          "additions": 0,
+          "deletions": 0
+        },
+        {
+          "timestamp": "2025-04-15T17:16:39.618Z",
+          "additions": 1,
+          "deletions": 0
+        },
+        {
+          "timestamp": "2025-04-15T17:16:46.750Z",
+          "additions": 1,
+          "deletions": 0
+        },
+        {
+          "timestamp": "2025-04-15T17:16:48.357Z",
+          "additions": 1,
+          "deletions": 1
+        },
+        {
+          "timestamp": "2025-04-15T17:16:50.344Z",
+          "additions": 1,
+          "deletions": 1
+        },
+        {
+          "timestamp": "2025-04-15T17:16:53.420Z",
+          "additions": 1,
+          "deletions": 2
+        }
+      ],
+      "activeTime": 18858,
+      "timeSpent": "18s",
+      "totalEdits": 6,
+      "averageEditSize": 1.5
+    },
+    {
+      "file": "bin\\python.py",
+      "additions": 4,
+      "deletions": 1,
+      "changes": 4,
+      "firstModified": "2025-04-15T17:17:04.481Z",
+      "lastModified": "2025-04-15T17:17:16.731Z",
+      "modificationHistory": [
+        {
+          "timestamp": "2025-04-15T17:17:04.481Z",
+          "additions": 1,
+          "deletions": 0
+        },
+        {
+          "timestamp": "2025-04-15T17:17:12.259Z",
+          "additions": 1,
+          "deletions": 0
+        },
+        {
+          "timestamp": "2025-04-15T17:17:15.925Z",
+          "additions": 2,
+          "deletions": 1
+        },
+        {
+          "timestamp": "2025-04-15T17:17:16.731Z",
+          "additions": 0,
+          "deletions": 0
+        }
+      ],
+      "activeTime": 12250,
+      "timeSpent": "12s",
+      "totalEdits": 4,
+      "averageEditSize": 1.25
+    }
+  ]
 }

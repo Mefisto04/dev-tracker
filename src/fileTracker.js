@@ -91,21 +91,6 @@ class FileTracker {
     this.lastActivityTime = new Date();
   }
 
-  // updateFileStats(file, changes) {
-  //   const stats = this.fileStates.get(file) || {
-  //     additions: 0,
-  //     deletions: 0,
-  //     changes: 0,
-  //   };
-
-  //   stats.additions += changes.added;
-  //   stats.deletions += changes.removed;
-  //   stats.changes++;
-  //   stats.lastModified = new Date();
-
-  //   this.fileStates.set(file, stats);
-  // }
-
   updateFileStats(file, changes) {
     const stats = this.fileStates.get(file) || {
       additions: 0,
@@ -113,13 +98,36 @@ class FileTracker {
       changes: 0,
       firstModified: new Date(), // Track first modification
       lastModified: new Date(),
+      modificationHistory: [], // Track all modifications with timestamps
+      activeTime: 0, // Track accumulated active time in milliseconds
     };
 
     stats.additions += changes.added;
     stats.deletions += changes.removed;
     stats.changes++;
-    stats.lastModified = new Date(); // Update last modification
 
+    const now = new Date();
+
+    // If this is not the first modification, calculate time since last edit
+    if (stats.modificationHistory.length > 0) {
+      const lastEntry =
+        stats.modificationHistory[stats.modificationHistory.length - 1];
+      const timeSinceLastEdit = now - lastEntry.timestamp;
+
+      // Only count time if it's below the activity threshold (5 minutes)
+      if (timeSinceLastEdit < this.activityThreshold) {
+        stats.activeTime += timeSinceLastEdit;
+      }
+    }
+
+    // Record this modification
+    stats.modificationHistory.push({
+      timestamp: now,
+      additions: changes.added,
+      deletions: changes.removed,
+    });
+
+    stats.lastModified = now;
     this.fileStates.set(file, stats);
   }
 
@@ -164,23 +172,34 @@ class FileTracker {
     return totalMs - inactiveMs;
   }
 
-  // getFileStats() {
-  //   return Array.from(this.fileStates.entries()).map(([file, stats]) => ({
-  //     file: path.relative(this.projectPath, file),
-  //     ...stats,
-  //     timeSpent: moment.duration(stats.lastModified - this.initTime).humanize(),
-  //   }));
-  // }
-
   getFileStats() {
-    return Array.from(this.fileStates.entries()).map(([file, stats]) => ({
-      file: path.relative(this.projectPath, file),
-      ...stats,
-      timeSpent: moment
-        .duration(stats.lastModified - stats.firstModified)
-        .humanize(),
-      lastModified: stats.lastModified,
-    }));
+    return Array.from(this.fileStates.entries()).map(([file, stats]) => {
+      // Format active time in a readable format
+      let timeSpentFormatted;
+      const seconds = Math.floor(stats.activeTime / 1000);
+
+      if (seconds < 60) {
+        timeSpentFormatted = `${seconds}s`;
+      } else if (seconds < 3600) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSecs = seconds % 60;
+        timeSpentFormatted = `${minutes}m ${remainingSecs}s`;
+      } else {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        timeSpentFormatted = `${hours}h ${minutes}m`;
+      }
+
+      return {
+        file: path.relative(this.projectPath, file),
+        ...stats,
+        timeSpent: timeSpentFormatted,
+        totalEdits: stats.modificationHistory.length,
+        averageEditSize:
+          (stats.additions + stats.deletions) / Math.max(1, stats.changes),
+        lastModified: stats.lastModified,
+      };
+    });
   }
 }
 
